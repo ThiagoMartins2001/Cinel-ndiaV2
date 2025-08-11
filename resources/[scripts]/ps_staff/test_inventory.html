@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste do Inventário - PS Staff</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #35bc98;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #2a9d7a;
+        }
+        .log-area {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            margin-top: 15px;
+        }
+        .inventory-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .inventory-item:hover {
+            border-color: #35bc98;
+            box-shadow: 0 4px 15px rgba(53, 188, 152, 0.15);
+            transform: translateY(-2px);
+        }
+        .item-image-placeholder {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            width: 100%;
+        }
+        .item-name {
+            font-weight: 600;
+            color: #1a1d22;
+            font-size: 10px;
+            line-height: 1.2;
+            word-wrap: break-word;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .item-amount {
+            color: #35bc98;
+            font-weight: 700;
+            font-size: 11px;
+            background: rgba(53, 188, 152, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            border: 1px solid rgba(53, 188, 152, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste do Sistema de Inventário</h1>
+        
+        <div class="test-section">
+            <h3>📋 Dados de Teste</h3>
+            <p>Este teste simula diferentes estruturas de dados de inventário para verificar se o sistema funciona corretamente.</p>
+            
+            <button class="test-button" onclick="testStructure1()">Teste Estrutura 1 (Padrão)</button>
+            <button class="test-button" onclick="testStructure2()">Teste Estrutura 2 (Alternativa)</button>
+            <button class="test-button" onclick="testStructure3()">Teste Estrutura 3 (Strings)</button>
+            <button class="test-button" onclick="testStructure4()">Teste Estrutura 4 (Mista)</button>
+            <button class="test-button" onclick="clearTest()">Limpar Teste</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Log de Debug</h3>
+            <div id="logArea" class="log-area"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎒 Inventário Renderizado</h3>
+            <div id="testInventoryGrid" class="inventory-grid"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Função para adicionar logs
+        function addLog(message) {
+            const logArea = document.getElementById('logArea');
+            const timestamp = new Date().toLocaleTimeString();
+            logArea.innerHTML += `[${timestamp}] ${message}\n`;
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        // Função para limpar logs
+        function clearLogs() {
+            document.getElementById('logArea').innerHTML = '';
+        }
+
+        // Função slugify (copiada do script original)
+        function slugify(str) {
+            return str
+                .toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/[\s_-]+/g, '_')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        // Função para normalizar estrutura do inventário (copiada do script original)
+        function normalizeInventoryData(inventory) {
+            addLog("Normalizando dados do inventário: " + JSON.stringify(inventory));
+            
+            if (!inventory || !Array.isArray(inventory)) {
+                addLog("Inventário inválido ou não é array");
+                return [];
+            }
+            
+            return inventory.map(item => {
+                // Se o item já tem a estrutura correta, retornar como está
+                if (item.name && (item.amount !== undefined || item.quantidade !== undefined)) {
+                    return {
+                        name: item.name,
+                        amount: item.amount || item.quantidade || 1,
+                        item: item.item || item.name,
+                        Index: item.Index || item.index || item.item
+                    };
+                }
+                
+                // Se é uma string (formato antigo), converter
+                if (typeof item === 'string') {
+                    return {
+                        name: item,
+                        amount: 1,
+                        item: item,
+                        Index: item
+                    };
+                }
+                
+                // Se é um objeto com estrutura diferente, tentar adaptar
+                if (typeof item === 'object') {
+                    return {
+                        name: item.name || item.item || item.nome || 'Item Desconhecido',
+                        amount: item.amount || item.quantidade || item.qtd || 1,
+                        item: item.item || item.name || item.nome || 'Item Desconhecido',
+                        Index: item.Index || item.index || item.item || item.name || item.nome
+                    };
+                }
+                
+                // Fallback
+                return {
+                    name: 'Item Desconhecido',
+                    amount: 1,
+                    item: 'unknown',
+                    Index: 'unknown'
+                };
+            });
+        }
+
+        // Função para renderizar inventário (versão simplificada)
+        function renderInventory(inventory) {
+            addLog("Renderizando inventário com " + inventory.length + " itens");
+            
+            const container = $('#testInventoryGrid');
+            container.html('');
+            
+            if (!inventory || inventory.length === 0) {
+                container.html('<div style="text-align: center; color: #6c757d; padding: 20px;">Inventário vazio</div>');
+                return;
+            }
+            
+            // Normalizar dados
+            const normalizedInventory = normalizeInventoryData(inventory);
+            addLog("Dados normalizados: " + JSON.stringify(normalizedInventory));
+            
+            normalizedInventory.forEach((item) => {
+                addLog("Processando item: " + JSON.stringify(item));
+                
+                const $card = $(`
+                    <div class="inventory-item" title="${item.name} - Quantidade: ${item.amount}">
+                        <div class="item-image-placeholder">
+                            <i class="fas fa-cube" style="color: #999; font-size: 16px;"></i>
+                        </div>
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-amount">${item.amount}x</div>
+                        </div>
+                    </div>
+                `);
+                
+                container.append($card);
+            });
+            
+            addLog("Renderização concluída");
+        }
+
+        // Dados de teste - Estrutura 1 (Padrão)
+        function testStructure1() {
+            clearLogs();
+            addLog("=== TESTE ESTRUTURA 1 (PADRÃO) ===");
+            
+            const testData = [
+                { name: "Pão", amount: 5, item: "bread", Index: "bread" },
+                { name: "Água", amount: 3, item: "water", Index: "water" },
+                { name: "Celular", amount: 1, item: "phone", Index: "phone" },
+                { name: "Dinheiro", amount: 1000, item: "money", Index: "money" }
+            ];
+            
+            addLog("Dados de teste: " + JSON.stringify(testData));
+            renderInventory(testData);
+        }
+
+        // Dados de teste - Estrutura 2 (Alternativa)
+        function testStructure2() {
+            clearLogs();
+            addLog("=== TESTE ESTRUTURA 2 (ALTERNATIVA) ===");
+            
+            const testData = [
+                { item: "bread", quantidade: 5, nome: "Pão" },
+                { item: "water", quantidade: 3, nome: "Água" },
+                { item: "phone", quantidade: 1, nome: "Celular" },
+                { item: "money", quantidade: 1000, nome: "Dinheiro" }
+            ];
+            
+            addLog("Dados de teste: " + JSON.stringify(testData));
+            renderInventory(testData);
+        }
+
+        // Dados de teste - Estrutura 3 (Strings)
+        function testStructure3() {
+            clearLogs();
+            addLog("=== TESTE ESTRUTURA 3 (STRINGS) ===");
+            
+            const testData = [
+                "Pão",
+                "Água", 
+                "Celular",
+                "Dinheiro"
+            ];
+            
+            addLog("Dados de teste: " + JSON.stringify(testData));
+            renderInventory(testData);
+        }
+
+        // Dados de teste - Estrutura 4 (Mista)
+        function testStructure4() {
+            clearLogs();
+            addLog("=== TESTE ESTRUTURA 4 (MISTA) ===");
+            
+            const testData = [
+                { name: "Pão", amount: 5 },
+                { item: "water", quantidade: 3 },
+                "Celular",
+                { nome: "Dinheiro", qtd: 1000 }
+            ];
+            
+            addLog("Dados de teste: " + JSON.stringify(testData));
+            renderInventory(testData);
+        }
+
+        // Limpar teste
+        function clearTest() {
+            clearLogs();
+            $('#testInventoryGrid').html('');
+            addLog("Teste limpo");
+        }
+
+        // Inicializar
+        $(document).ready(function() {
+            addLog("Sistema de teste inicializado");
+            addLog("Clique em um dos botões para testar diferentes estruturas de dados");
+        });
+    </script>
+</body>
+</html> 

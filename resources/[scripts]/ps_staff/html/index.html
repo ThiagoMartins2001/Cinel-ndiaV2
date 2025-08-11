@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Tablet Administrativo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div id="mainPage" class="paineladm">
+        <!-- Menu Lateral Esquerdo -->
+        <div id="mainMenu">
+            <div class="title">
+                <div class="painel-title">PAINEL ADMINISTRATIVO</div>
+                <div class="user-info user-block-green">
+                    <div class="nome">Thiago #1</div>
+                </div>
+            </div>
+            
+            <ul class="menu-items">
+                <li class="menu-item active" data-section="dashboard">
+                    <span><i class="fas fa-tachometer-alt"></i></span>
+                    <span>Dashboard</span>
+                </li>
+                <li class="menu-item" data-section="players">
+                    <span><i class="fas fa-users"></i></span>
+                    <span>Players</span>
+                </li>
+                <li class="menu-item" data-section="banimentos">
+                    <span><i class="fas fa-ban"></i></span>
+                    <span>Punições</span>
+                </li>
+                <li class="menu-item" data-section="spawnitens">
+                    <span><i class="fas fa-cube"></i></span>
+                    <span>Spawn Itens</span>
+                </li>
+                <li class="menu-item" data-section="spawnveiculos">
+                    <span><i class="fas fa-car"></i></span>
+                    <span>Spawn Carros</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Área de Conteúdo -->
+        <div id="content">
+            <div id="dashboard-scroll-wrapper" style="height: 100%; max-height: 100vh; overflow-y: auto;">
+                <div id="titleContent">
+                    <span class="section-title">Players</span>
+                    <div class="auto-update-controls">
+                        <button id="toggleAutoUpdate" class="btn-toggle" title="Ativar/Desativar atualização automática">
+                            <i class="fas fa-sync-alt"></i>
+                            <span id="autoUpdateStatus">Ativo</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="feed">
+                    <!-- Players Section -->
+                    <div class="section players">
+                        <div class="content-layout">
+                            <div class="list-panel">
+                                <div class="search-container">
+                                    <div class="search-box">
+                                        <i class="fas fa-search"></i>
+                                        <input id="txtBusca" placeholder="Pesquisar player...">
+                                    </div>
+                                </div>
+                                <div class="players-list" id="principal"></div>
+                            </div>
+                            
+                            <div class="details-panel" id="playerDetails">
+                                <div class="player-info">
+                                    <div class="info-header">
+                                        <h3>Informações do Player</h3>
+                                    </div>
+                                    <div class="player-data" id="playerData">
+                                        <p class="no-selection">Selecione um player para ver os detalhes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Punições Section -->
+                    <div class="section banimentos" style="display: none;">
+                        <div class="content-layout">
+                            <div class="list-panel">
+                                <div class="search-container">
+                                    <div class="search-box">
+                                        <i class="fas fa-search"></i>
+                                        <input id="txtBuscaBan" placeholder="Pesquisar player...">
+                                    </div>
+                                </div>
+                                <div class="players-list" id="principalBan"></div>
+                            </div>
+                            
+                            <div class="details-panel">
+                                <div class="punishments-info">
+                                    <div class="info-header">
+                                        <h3>Punições do Player</h3>
+                                    </div>
+                                    <div class="punishments-data" id="punishmentsData">
+                                        <p class="no-selection">Selecione um player para ver as punições</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spawn Itens Section -->
+                    <div class="section spawnitens" style="display: none;">
+                        <div class="spawn-container">
+                            <div class="spawn-forms">
+                                <div class="spawn-form">
+                                    <h3>Lista de Itens</h3>
+                                    <div class="form-group">
+                                        <input type="text" id="itemOther" placeholder="Nome do item...">
+                                        <div class="form-row">
+                                            <input type="number" id="passportOther" placeholder="Passaporte (deixe em branco para você)...">
+                                            <input type="number" id="quantityOther" placeholder="Quantidade...">
+                                        </div>
+                                    </div>
+                                    <div class="items-grid" id="itemsGridOther"></div>
+                                    <button class="spawn-btn" id="spawnOther">Spawnar Item</button>
+                                </div>
+                            </div>
+                            <div class="spawn-warning">
+                                <h5><i class="fas fa-exclamation-triangle"></i> Atenção:</h5>
+                                <p>Todos os Spawns feitos através dessa ferramenta serão registrados em Log's via Discord.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spawn Veículos Section -->
+                    <div class="section spawnveiculos" style="display: none;">
+                        <div class="vehicles-container">
+                            <div class="vehicles-search">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input id="txtBuscaVehicle" placeholder="Pesquisar veículo...">
+                                </div>
+                            </div>
+                            
+                            <div class="vehicles-layout">
+                                <div class="vehicles-grid" id="vehiclesGrid"></div>
+                                
+                                <div class="vehicles-actions">
+                                    <div class="form-group">
+                                        <input type="number" id="vehiclePlayerId" placeholder="ID do jogador..." min="1">
+                                    </div>
+                                    <button class="spawn-btn add-vehicle-btn" id="addVehicle">
+                                        <i class="fas fa-plus"></i> Adicionar Veículo
+                                    </button>
+                                    <button class="spawn-btn" id="spawnVehicle">
+                                        <i class="fas fa-car"></i> Spawnar Veículo
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="spawn-warning">
+                                <h5><i class="fas fa-exclamation-triangle"></i> Atenção:</h5>
+                                <p>Todos os veículos spawnados através dessa ferramenta serão registrados em Log's via Discord.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Section -->
+                    <div class="section dashboard">
+                        <div class="dashboard-status-header" style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Status Geral</span>
+                            </div>
+                            <button id="refreshDashboardBtn" class="refresh-dashboard-btn">Atualizar Dashboard</button>
+                        </div>
+                        <hr class="dashboard-divider" />
+                        <div class="dashboard-container" id="dashboardGeral">
+                            <div class="dashboard-card blue">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle blue"><i class="fas fa-users"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlinePlayersNumber">0</div>
+                                        <div class="dashboard-label">Jogadores Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card green">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle green"><i class="fas fa-headset"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineStaffNumber">0</div>
+                                        <div class="dashboard-label">Staff Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-status-header" style="margin-top: 40px;">
+                            <i class="fas fa-users-cog"></i>
+                            <span>Status de Grupos</span>
+                        </div>
+                        <hr class="dashboard-divider" />
+                        <div class="dashboard-container" id="dashboardGrupos">
+                            <!-- Aqui entram todas as demais caixas de grupo -->
+                            <div class="dashboard-card police">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle police"><i class="fas fa-shield-alt"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlinePoliceNumber">0</div>
+                                        <div class="dashboard-label">P.M Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card prf">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle prf"><i class="fas fa-shield-alt"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlinePRFNumber">0</div>
+                                        <div class="dashboard-label">PRF Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card pcivil">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle pcivil"><i class="fas fa-shield-alt"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlinePCivilNumber">0</div>
+                                        <div class="dashboard-label">P.C Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card core">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle core"><i class="fas fa-shield-alt"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineCoreNumber">0</div>
+                                        <div class="dashboard-label">Core Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card dk">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle dk"><i class="fas fa-tools"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineOficina01Number">0</div>
+                                        <div class="dashboard-label">Oficina01 Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card dk2">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle dk2"><i class="fas fa-tools"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineOficina012Number">0</div>
+                                        <div class="dashboard-label">Oficina02 Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card harmony">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle harmony"><i class="fas fa-tools"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineHarmonyNumber">0</div>
+                                        <div class="dashboard-label">Harmony Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card judiciary">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle judiciary"><i class="fas fa-balance-scale"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineJudiciaryNumber">0</div>
+                                        <div class="dashboard-label">Judiciário Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card paramedic">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle paramedic"><i class="fas fa-briefcase-medical"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineParamedicNumber">0</div>
+                                        <div class="dashboard-label">Hospital Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card burgershot">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle burgershot"><i class="fas fa-hamburger"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlineBurgerShotNumber">0</div>
+                                        <div class="dashboard-label">BurgerShot Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card pearls">
+                                <div class="card-top-bar"></div>
+                                <div class="card-content">
+                                    <div class="icon-circle pearls"><i class="fas fa-fish"></i></div>
+                                    <div>
+                                        <div class="dashboard-number" id="onlinePearlsNumber">0</div>
+                                        <div class="dashboard-label">Pearls Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Nova seção: Lista de Membro por grupos -->
+                        <div class="organizacoes-legais-section" style="margin-top: 40px;">
+                            <div class="dashboard-status-header">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Lista de Membro por grupos</span>
+                            </div>
+                            <hr class="dashboard-divider" />
+                            <div class="org-cards-list-panel">
+                                <!-- Card Staff -->
+                                <div class="org-card" id="orgStaff">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-user-shield"></i></div>
+                                        <div class="org-card-title">Staff <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Policia Militar -->
+                                <div class="org-card" id="orgPolice">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-shield-alt"></i></div>
+                                        <div class="org-card-title">Policia Militar <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card PRF -->
+                                <div class="org-card" id="orgPRF">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-shield-alt"></i></div>
+                                        <div class="org-card-title">PRF <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card PCivil -->
+                                <div class="org-card" id="orgPCivil">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-shield-alt"></i></div>
+                                        <div class="org-card-title">PCivil <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Core -->
+                                <div class="org-card" id="orgCore">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-shield-alt"></i></div>
+                                        <div class="org-card-title">Core <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Oficina01 -->
+                                <div class="org-card" id="orgOficina01">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-tools"></i></div>
+                                        <div class="org-card-title">Oficina01 <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Oficina02 -->
+                                <div class="org-card" id="orgOficina012">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-tools"></i></div>
+                                        <div class="org-card-title">Oficina02 <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Harmony -->
+                                <div class="org-card" id="orgHarmony">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-tools"></i></div>
+                                        <div class="org-card-title">Harmony <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Judiciary -->
+                                <div class="org-card" id="orgJudiciary">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-balance-scale"></i></div>
+                                        <div class="org-card-title">Judiciary <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Paramedic -->
+                                <div class="org-card" id="orgParamedic">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-briefcase-medical"></i></div>
+                                        <div class="org-card-title">Paramedic <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card BurgerShot -->
+                                <div class="org-card" id="orgBurgerShot">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-hamburger"></i></div>
+                                        <div class="org-card-title">BurgerShot <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Pearls -->
+                                <div class="org-card" id="orgPearls">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-fish"></i></div>
+                                        <div class="org-card-title">Pearls <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Playboy -->
+                                <div class="org-card" id="orgPlayboy">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-glass-martini"></i></div>
+                                        <div class="org-card-title">Playboy <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Madrazzo -->
+                                <div class="org-card" id="orgMadrazzo">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-crown"></i></div>
+                                        <div class="org-card-title">Madrazzo <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card TheSouth -->
+                                <div class="org-card" id="orgTheSouth">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-flag"></i></div>
+                                        <div class="org-card-title">TheSouth <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Vineyard -->
+                                <div class="org-card" id="orgVineyard">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-wine-bottle"></i></div>
+                                        <div class="org-card-title">Vineyard <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Barragem -->
+                                <div class="org-card" id="orgBarragem">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-water"></i></div>
+                                        <div class="org-card-title">Barragem <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Farol -->
+                                <div class="org-card" id="orgFarol">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-lightbulb"></i></div>
+                                        <div class="org-card-title">Farol <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Parque -->
+                                <div class="org-card" id="orgParque">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-tree"></i></div>
+                                        <div class="org-card-title">Parque <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Sandy -->
+                                <div class="org-card" id="orgSandy">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-umbrella-beach"></i></div>
+                                        <div class="org-card-title">Sandy <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Petroleo -->
+                                <div class="org-card" id="orgPetroleo">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-oil-can"></i></div>
+                                        <div class="org-card-title">Petroleo <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Praia-1 -->
+                                <div class="org-card" id="orgPraia1">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-water"></i></div>
+                                        <div class="org-card-title">Praia-1 <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Praia-2 -->
+                                <div class="org-card" id="orgPraia2">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-water"></i></div>
+                                        <div class="org-card-title">Praia-2 <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Zancudo -->
+                                <div class="org-card" id="orgZancudo">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-flag"></i></div>
+                                        <div class="org-card-title">Zancudo <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Chiliad -->
+                                <div class="org-card" id="orgChiliad">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-mountain"></i></div>
+                                        <div class="org-card-title">Chiliad <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                                <!-- Card Vagos -->
+                                <div class="org-card" id="orgVagos">
+                                    <div class="org-card-main">
+                                        <div class="org-card-icon"><i class="fas fa-skull-crossbones"></i></div>
+                                        <div class="org-card-title">Vagos <span class="org-card-members">(0 membros)</span></div>
+                                        <div class="org-card-expand"><i class="fas fa-chevron-down"></i></div>
+                                    </div>
+                                    <div class="org-card-details" style="display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals e Overlays -->
+    <!-- Modal para adicionar cargo -->
+    <div class="modal-overlay" id="cargoModal" style="display: none;">
+        <div class="modal">
+            <h3>Adicionar Cargo</h3>
+            <p>Selecione o cargo que deseja adicionar para este player:</p>
+            <select id="cargoSelect">
+                <option value="" disabled selected>Selecione um cargo...</option>
+            </select>
+            <p>Selecione o nível do cargo:</p>
+            <select id="nivelSelect">
+                <option value="" disabled selected>Selecione o nível...</option>
+            </select>
+            <div class="modal-actions">
+                <button class="btn-confirm" id="confirmCargo">Adicionar</button>
+                <button class="btn-cancel" id="cancelCargo">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para banimento -->
+    <div class="modal-overlay" id="banModal" style="display: none;">
+        <div class="modal">
+            <h3>Aplicar Banimento</h3>
+            <p>Digite o motivo do banimento:</p>
+            <input type="text" id="banReason" placeholder="Motivo do banimento...">
+            <p>Digite o tempo de banimento em dias:</p>
+            <input type="number" id="banTime" placeholder="Tempo em dias...">
+            <div class="modal-actions">
+                <button class="btn-confirm" id="confirmBan">Banir</button>
+                <button class="btn-cancel" id="cancelBan">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para remoção de veículos -->
+    <div class="modal-overlay" id="removeVehicleModal" style="display: none;">
+        <div class="modal">
+            <h3>Confirmar Remoção</h3>
+            <p>Tem certeza que deseja remover este veículo da garagem do jogador?</p>
+            <div class="vehicle-info">
+                <p><strong>Veículo:</strong> <span id="vehicleName"></span></p>
+                <p><strong>Placa:</strong> <span id="vehiclePlate"></span></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-confirm" id="confirmRemoveVehicle">Confirmar</button>
+                <button class="btn-cancel" id="cancelRemoveVehicle">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chat Staff (usando a mesma estrutura dos outros modais) -->
+    <div class="modal-overlay" id="chatStaffModal" style="display: none;">
+        <div class="modal chat-staff-modal">
+            <div class="chat-staff-header">
+                <h3><i class="fas fa-headset"></i> Chat com Staff</h3>
+                <button class="btn-cancel" id="closeChatStaff">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chat-staff-messages" id="chatStaffMessages">
+                <div class="welcome-message">
+                    <div class="chat-message system">
+                        <i class="fas fa-info-circle"></i>
+                        Bem-vindo ao chat com a equipe! Digite sua mensagem abaixo e aguarde uma resposta.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-staff-input">
+                <div class="input-group">
+                    <input type="text" id="chatStaffInput" placeholder="Digite sua mensagem para a equipe..." maxlength="500">
+                    <button id="sendChatStaff" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="char-counter">
+                    <span id="charCount">0</span>/500
+                </div>
+                <div class="chat-info">
+                    <i class="fas fa-clock"></i> Tempo de resposta médio: 5-10 minutos
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/script.js" type="text/javascript"></script>
+</body>
+
+</html>

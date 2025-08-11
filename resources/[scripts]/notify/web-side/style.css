@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+html {
+	overflow-x: hidden !important;
+	overflow-y: hidden !important;
+	background: transparent !important;
+}
+
+body {
+    background: transparent !important; 
+}
+
+.ldBar-label{
+    opacity: 0;
+}
+
+
+
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.textn {
+    font-size: 16px;
+    color: #fff;
+	text-transform: uppercase;
+	font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+	letter-spacing: 0.5px;
+}
+
+.textn2 {
+	margin-top: 1%;
+    font-size: 13px;
+    color: #ffffffdc;
+	font-family: 'Roboto', sans-serif;
+    font-style: normal;
+	font-weight: 400;
+}
+
+#notifications {
+	right: 50px;
+	bottom: 350px;
+	display: flex;
+	z-index: 99999;
+	color: #c6c6c6;
+	max-width: 400px;
+	overflow: hidden;
+	align-items: flex-end;
+	flex-direction: column;
+	position: absolute !important;
+}
+
+#notifications b {
+    color: #fff;
+    font-weight: 300;
+}
+
+#notifications > div {
+	color: #c6c6c6;
+	margin-top: 10px;
+	position: relative;
+	padding: 20px 20px 15px 20px;
+	border-radius: 10px;
+	background-image: linear-gradient(to right, rgb(15, 15, 15,0.6) , rgb(15, 15, 15,0.8));
+	display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 3px solid transparent;
+}
+
+.box-fora {
+	margin-right: 25px;
+    width: 45px; /* Ajuste conforme necessário */
+    height: 45px; /* Ajuste conforme necessário */
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center; /* Centraliza horizontalmente os itens filhos */
+	position: relative;
+}
+
+.vidaBar{
+	font-size: 25px;
+}
+
+.icon {
+	position: absolute;
+	width: 35px;
+	height: 35px;
+	background: rgb(255, 255, 255,0.05);
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center; /* Centraliza o conteúdo dentro do .icon */
+}
+
+.icon img{
+    width: 22px;
+    height: 22px; 
+}
+
+
+
+.ldBar-label{
+	display: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,54 @@
+===============================================================================
+                    PROBLEMA: ADRENALINA FUNCIONANDO EM OUTROS LOCAIS
+===============================================================================
+
+POSSÍVEIS CAUSAS E SOLUÇÕES:
+
+1. CACHE DO SERVIDOR
+   - O servidor pode estar usando versão antiga em cache
+   - SOLUÇÃO: Reinicie o resource paramedic ou o servidor
+
+2. VERIFICAR SE AS ALTERAÇÕES FORAM SALVAS
+   - Confirme que o arquivo adrenaline_locations.lua foi salvo
+   - SOLUÇÃO: Verifique o conteúdo do arquivo
+
+3. DEBUG DO SISTEMA
+   Use estes comandos para verificar:
+
+   /testadrenaline - Testa o sistema completo
+   /debugadrenaline - Debug detalhado da localização
+   /testadrenalinelocation - Testa local atual
+   /reloadadrenaline - Recarrega o sistema (admin)
+
+4. VERIFICAR LOGS
+   - Os logs agora mostram informações detalhadas
+   - Verifique o console do servidor quando usar adrenalina
+
+5. COORDENADAS CORRETAS
+   - Local configurado: vec3(808.80,-494.76,30.69)
+   - Raio: 5.0 metros
+   - Use /debugadrenaline para verificar distância
+
+===============================================================================
+
+PASSOS PARA RESOLVER:
+
+1. Reinicie o resource paramedic:
+   restart paramedic
+
+2. Teste o sistema:
+   /testadrenaline
+
+3. Vá até as coordenadas corretas e teste:
+   /testadrenalinelocation
+
+4. Se ainda não funcionar, verifique os logs no console
+
+===============================================================================
+
+LOCAL CONFIGURADO ATUALMENTE:
+- Nome: "Local de Adrenalina"
+- Coordenadas: 808.80, -494.76, 30.69
+- Raio: 5.0 metros
+
+===============================================================================

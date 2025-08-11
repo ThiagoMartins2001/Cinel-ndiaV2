@@ -1,0 +1,70 @@
+===============================================================================
+                    SISTEMA DE ADRENALINA EM LOCAIS ESPECÍFICOS
+===============================================================================
+
+COMO USAR:
+
+1. VÁ ATÉ UM LOCAL AUTORIZADO:
+   - Hospital Sul (359.46, -1421.1, 32.5)
+   - Hospital Norte (1826.79, 3674.3, 34.27)
+   - Hospital Paleto (-254.98, 6326.58, 32.42)
+   - Posto Sandy Shores (1141.68, -1539.66, 35.03)
+   - Clínica Central (311.83, -593.31, 43.08)
+
+2. TENHA O ITEM "ADRENALINA" NO INVENTÁRIO
+
+3. ENCONTRE UMA PESSOA DESACORDADA (vida <= 100)
+
+4. CLIQUE NO ITEM ADRENALINA PRÓXIMO À PESSOA
+
+5. AGUARDE 8 SEGUNDOS PARA A APLICAÇÃO
+
+6. A PESSOA SERÁ REANIMADA COM 101 DE VIDA
+
+===============================================================================
+
+COMANDOS ÚTEIS:
+
+/testadrenalinelocation - Testa se você está em local permitido
+/testadrenaline - Testa o sistema completo
+/simulateadrenaline - Simula uso de adrenalina
+/adrenalineinfo - Mostra informações detalhadas
+
+===============================================================================
+
+REGRAS:
+
+✅ FUNCIONA EM:
+- Locais médicos autorizados (raio de 30-50m)
+- Pessoas desacordadas (vida <= 100)
+- Qualquer player (não precisa ser paramédico)
+
+❌ NÃO FUNCIONA EM:
+- Locais não autorizados
+- Pessoas conscientes
+- Distância maior que 3 metros
+
+⚠️ AVISOS:
+- Sistema alerta quando há paramédicos online
+- Todas as ações são registradas em logs
+- Recomenda-se chamar paramédicos quando disponíveis
+
+===============================================================================
+
+CONFIGURAÇÃO:
+
+Para modificar o sistema, edite:
+- client-side/adrenaline_config.lua (configurações gerais)
+- client-side/adrenaline_locations.lua (locais autorizados)
+
+===============================================================================
+
+SUPORTE:
+
+Se encontrar problemas:
+1. Use /testadrenaline para verificar o sistema
+2. Verifique se está em local autorizado
+3. Confirme se a pessoa está desacordada
+4. Verifique se tem o item adrenalina no inventário
+
+===============================================================================

@@ -1,0 +1,73 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>#Street</title>
+		<link href="css.css" rel="stylesheet" type="text/css"/>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div class="inventory">
+			<div class="innerInventory">
+				<div id="weight">
+					<div class="left">
+						<div class="name">
+							<div class="title">INVENTÁRIO</div>
+							<div class="description">MOCHILA</div>
+						</div>
+						<div class="weight">
+							<div class="title">PESO</div>
+							<div class="weightStats">
+								<div class="weightBar" id="weightBarLeft"></div>
+								<div class="weightText"><span id="weightTextLeft"></span> <strong>KG</strong></div>
+							</div>
+						</div>
+					</div>
+					<div class="middle"></div>
+					<div class="right">
+						<!-- <div class="name">
+							<div class="title">INVENTÁRIO</div>
+							<div class="description">MOCHILA</div>
+						</div>
+						<div class="weight">
+							<div class="title">PESO</div>
+							<div class="weightStats">
+								<div class="weightBar" id="weightBarRight"></div>
+								<div class="weightText"><span id="weightTextRight"></span> <strong>KG</strong></div>
+							</div>
+						</div> -->
+					</div>
+				</div>
+
+				<div class="sections">
+					<div class="invLeft"></div>
+					<div class="invMiddle">
+						<span style="font-size:.65rem;margin-bottom:.5rem">QUANTIDADE</span>
+						<input class="amount" placeholder="QTD" type="number" onKeyPress="if(this.value.length==9) return false;" maxlength="9" />
+						<div class="use">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V9a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+							<span>USAR</span>
+						</div>
+						<div class="send">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+							<span>ENVIAR</span>
+						</div>
+						<div class="deliver">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+							<span>Entregas</span>
+						</div>
+						<div class="trash">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/><circle cx="7" cy="18" r="2"/><path d="M15 18H9"/><circle cx="17" cy="18" r="2"/></svg>
+							<span>LIXO</span>
+						</div>
+					</div>
+					<div class="invRight"></div>
+				</div>
+			</div>
+		</div>
+		<script src="jquery.js"></script>
+	</body>
+</html>
