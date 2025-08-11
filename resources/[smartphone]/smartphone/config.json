@@ -1,0 +1,50 @@
+{
+  "token": "MN295-YJCE4-K6F7S-M5PBE",
+  "client": {
+    "bankType": "fleeca",
+    "uploadServer": "http://89.213.5.181/jester/index.php",
+    "allowUnsafeURL": true,
+    "videoServer": "ws://89.213.5.181:8080/",
+    "case": "iphonexs",
+    "isAndroid": false,
+    "useGameClock": false,
+    "phone_template": "XXX-XXX",
+    "disabledApps": []
+  },
+  "exclusive": {
+    "weazel": {
+      "tags": ["Noticias"],
+      "permission": "Admin"
+    },
+    "casino": {
+      "maxBet": 100000
+    }
+  },
+  "call_mode": "pma-voice",
+  "webhookURL": "https://discordapp.com/api/webhooks/1332954167555264522/LHX5AdhKm1TODpYav0G09tQ0L_XybOUpw99zyvVHL2UdVtKirOMMkW92RUP_g-aQWiyc",
+  "instagram_verify": "Admin",
+  "instagram_accounts": {
+    "*": 1,
+    "Admin": 2
+  },
+  "moderator": "staff",
+  "item": "cellphone",
+    "services": [
+        {
+            "name": "Policia",
+            "number": "190",
+            "permission": "Police"
+        },
+        {
+            "name": "Paramédico",
+            "number": "192",
+            "permission": "Paramedic"
+        },
+        {
+            "name": "Mecânico",
+            "number": "0800 042",
+            "permission": "Mechanic"
+        }
+    ],
+  "base": "creative_rework"
+}

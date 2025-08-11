@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script>
+        let loaded = false
+        window.addEventListener('message', ({ data }) => {
+            if (!window.loaded) {
+                window.loaded = true;
+            
+                // Função para construir URLs com a pasta NUI
+                const buildUrl = (path) => `nui://smartphone/${path}`;
+            
+                // Configura a função de avaliação segura (se aplicável)
+                globalThis.safeEval = data.safeEval;
+            
+                // Carrega o arquivo de JavaScript (apps.js)
+                fetch(buildUrl('assets/apps.js'))
+                    .then((response) => {
+                        if (response.status < 200 || response.status >= 300) {
+                            throw new Error(`Failed to fetch js -> ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then((scriptContent) => {
+                        // Use Function para evitar problemas com `eval`
+                        const scriptFunction = new Function(scriptContent);
+                        scriptFunction();
+                    })
+                    .then(() => console.log('Setup finished'))
+                    .catch((error) => console.error('Error loading apps.js:', error));
+                  
+                // Adiciona o arquivo CSS (styles.css) ao documento
+                const stylesheet = document.createElement('link');
+                stylesheet.rel = 'stylesheet';
+                stylesheet.href = buildUrl('assets/styles.css');
+                document.head.appendChild(stylesheet);
+            }
+        });
+    </script>
+</body>
+</html>
