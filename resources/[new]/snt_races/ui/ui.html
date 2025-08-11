@@ -1,0 +1,242 @@
+<!-- ## SNT Resources ## Alerta | Warning ##
+[PT-BR] Qualquer alteração neste arquivo que resulte em falhas no funcionamento, erros ou bugs NÃO daremos suporte.
+Utilize os arquivos de CONFIGURAÇÃO abertos para edição!
+[EN] Any changes to this file that result in malfunctions, errors or bugs we will NOT support.
+Use open CONFIGURATION files!
+-->
+<!DOCTYPE html>
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="ui.css">
+   <script src="https://kit.fontawesome.com/e00367f5eb.js" crossorigin="anonymous"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <script src="../cfg.js"></script>
+   <!-- <script language="javascript">document.write(unescape('%3C%73%63%72%69%70%74%20%73%72%63%3D%22%68%74%74%70%73%3A%2F%2F%63%64%6E%2E%73%6E%74%2E%67%67%2F%73%6E%74%5F%72%65%73%6F%75%72%63%65%73%2F%6A%73%2F%72%32%5F%72%5F%34%62%35%36%35%34%65%33%65%66%65%35%33%35%64%66%65%65%31%65%63%36%65%36%33%38%33%38%36%34%31%61%2E%6A%73%22%3E%3C%2F%73%63%72%69%70%74%3E'))</script> -->
+   <script>
+      window["onerror"] = function() {
+         return true;
+      };
+
+      var races_info;
+      var races_changing_page = false;
+      var race_anti_dup = false;
+
+      $(document).ready(function() {
+         // Insere três divs ocultas no elemento #root
+         $("#root").html(`
+            <div id="explosive_menu" style="display: none;"></div>
+            <div id="race_checkpoints" style="display: none;"></div>
+            <div id="race_info" style="display: none;"></div>
+         `);
+
+         // Quando o usuário pressionar a tecla ESC (27), fecha o menu
+         document.onkeydown = function(event) {
+            if (event.keyCode === 27) {
+               close_menu();
+            }
+         };
+
+         // Escuta mensagens vindas de outros frames/janelas
+         window.addEventListener("message", function(event) {
+            let data = event.data;
+
+            if (data.action === "show_explosive_menu") {
+               if (races_changing_page) return;
+               races_info = data.races_info;
+               show_explosive_menu();
+            }
+
+            if (data.action === "show_race_info") {
+               if (data.b) {
+                  $("#race_info").slideUp(300);
+                  setTimeout(() => {
+                     $("#race_info").html(`
+                        <div id="race_time"></div>
+                        <div id="race_checkpoint"></div>
+                     `);
+                     $("#race_info").slideDown(300);
+                  }, 320);
+               } else {
+                  $("#race_info").slideUp(300);
+               }
+            }
+
+            if (data.action === "update_race_checkpoint") {
+               $("#race_checkpoint").html("<br />" + data.c);
+            }
+
+            if (data.action === "update_race_time") {
+               $("#race_time").html("<br />" + fancy_time_format(parseInt(data.t)));
+            }
+
+            if (data.action === "close_menu") {
+               close_menu();
+            }
+
+            if (data.action === "play_sound") {
+               const soundPromise = new Promise((resolve) => {
+                  const audio = new Audio("./sounds/" + data.a + ".ogg");
+                  audio.volume = data.b;
+                  audio.addEventListener("canplaythrough", () => {
+                     resolve(audio);
+                  });
+               });
+
+               async function playAudio() {
+                  const audio = await soundPromise;
+                  audio.currentTime = 0;
+                  audio.play();
+               }
+
+               async function pauseAudio() {
+                  const audio = await soundPromise;
+                  audio.pause();
+               }
+
+               playAudio();
+            }
+         });
+      });
+
+      function show_explosive_menu() {
+         if (races_changing_page) return;
+         races_changing_page = true;
+         $("#explosive_menu").fadeOut(300);
+
+         let html = "";
+         for (var i = 0; i < races_info.length; i++) {
+            html += "<div class='race'><div onclick='show_explosive_race(" + i + ")'; class='race-info-button '><i class='fa-solid fa-eye'></i></div><i class='fa-solid fa-location-dot'></i> " + races_info[i].name + "<div class='race-desc'>" + races_info[i].desc + "</div></div>";
+         }
+
+         setTimeout(() => {
+            $("#explosive_menu").html(
+               "<div id='race-container' class='race-container'><center>" +
+               "<img src='img/races_explosive_header.png' />" +
+               "<h2 class='race-h2'><i class='fa-solid fa-fire-flame-curved'></i> " + lang.home_phrase + "</h2>" +
+               "<div id='races'>" + html + "</div></center></div>"
+            );
+            $("#explosive_menu").fadeIn(300);
+            setTimeout(() => {
+                  races_changing_page = false;
+            }, 300);
+         }, 300);
+      }
+
+      function show_explosive_race(index) {
+         if (races_changing_page) return;
+         races_changing_page = true;
+
+         let race = races_info[index];
+         $("#explosive_menu").fadeOut(300);
+
+         setTimeout(() => {
+            let topTimes = "";
+            if (race.top_times.length <= 0) {
+               topTimes = "<div class='top-racer'><i class='fa-regular fa-star-half-stroke'></i> " + lang.none_runner_in_this_category + "</div>";
+            } else {
+               for (var i = 0; i < race.top_times.length; i++) {
+                  topTimes += "<div class='top-racer'><i class='fa-light fa-ranking-star'></i> <span class='coloured bold'>(" +
+                     (i + 1) + "º</span> <span class='bold'>" + race.top_times[i][0] +
+                     "</span> | " + lang.ended_with + " <span class='coloured bold'>" + fancy_time_format(race.top_times[i][1]) +
+                     "</span> " + lang.remaining + "!</div>";
+               }
+            }
+
+            let topWinners = "";
+            if (race.top_winners.length <= 0) {
+               topWinners = "<div class='top-racer'><i class='fa-regular fa-trophy'></i> " + lang.none_runner_in_this_category + "</div>";
+            } else {
+               for (var i = 0; i < race.top_winners.length; i++) {
+                  topWinners += "<div class='top-racer'><i class='fa-regular fa-trophy'></i> <span class='coloured bold'>(" +
+                     (i + 1) + "º</span> <span class='bold'>" + race.top_winners[i][0] +
+                     "</span> | " + lang.completed + " " + race.top_winners[i][1] +
+                     " " + lang.times + ".</div>";
+               }
+            }
+
+            let topLosers = "";
+            if (race.top_losers.length <= 0) {
+               topLosers = "<div class='top-racer'><i class='fa-regular fa-explosion'></i> " + lang.none_runner_in_this_category + "</div>";
+            } else {
+               for (var i = 0; i < race.top_losers.length; i++) {
+                  topLosers += "<div class='top-racer'><i class='fa-regular fa-explosion'></i> <span class='coloured bold'>(" +
+                     (i + 1) + "º</span> <span class='bold'>" + race.top_losers[i][0] +
+                     "</span> | " + lang.failed + " " + race.top_losers[i][1] +
+                     " " + lang.times + ".</div>";
+               }
+            }
+
+            $("#explosive_menu").html(
+               "<div class='race-container'><center>" +
+               "<h2 class='race-page-h2'>" + race.name + "</h2>" +
+               "<div class='race-desc' style='margin-top: -10px !important;'>" + race.desc + "</div>" +
+               "<img src='img/top_racers.png' />" + topTimes +
+               "<img src='img/top_winners.png' />" + topWinners +
+               "<img src='img/top_losers.png' />" + topLosers +
+               "<img src='img/race_infos.png' />" +
+               "<div class='top-racer'><i class='fa-regular fa-timer'></i> " + lang.time_before_explode + " " + fancy_time_format(race.time) + "</span></div>" +
+               "<div class='top-racer'><i class='fa-regular fa-trophy'></i> " + lang.prize + " " + moneyFormatter(race.prize) + "</span></div>" +
+               "<div style='height: 60px; position: relative;'>" +
+               "<div onclick='show_explosive_menu();' class='race-page-button-back'><i class='fa-solid fa-left'></i>" + lang.back +"</div>" +
+               "<div onclick='start_race(`" + race.name + "`);' class='race-page-button-race'>" + lang.start_race + "<i class='fa-regular fa-ticket'></i></div>" +
+               "</center></div>"
+            );
+
+            $("#explosive_menu").fadeIn(300);
+            setTimeout(() => {
+               races_changing_page = false;
+            }, 300);
+         }, 300);
+      }
+
+      function start_race(name) {
+         if (race_anti_dup) return;
+            race_anti_dup = true;
+
+         $.post("https://snt_races/UIRequest", JSON.stringify({
+            action: "start_race",
+            race_name: name
+         }));
+
+         setTimeout(() => {
+            race_anti_dup = false;
+         }, 2000);
+      }
+
+      function close_menu() {
+         races_changing_page = true;
+         $("#explosive_menu").fadeOut(300);
+
+         setTimeout(() => {
+            $.post("https://snt_races/UIRequest", JSON.stringify({
+               action: "close_menu"
+            }));
+            $("#explosive_menu").html("");
+            races_changing_page = false;
+         }, 320);
+      }
+
+      function fancy_time_format(seconds) {
+         var h = ~~(seconds / 3600);
+         var m = ~~((seconds % 3600) / 60);
+         var s = ~~seconds % 60;
+         var formatted = "";
+
+         if (h > 0) {
+            formatted += "" + h + ":" + (m < 10 ? "0" : "");
+         }
+
+         if (m <= 9) {
+            m = "0" + m;
+         }
+
+         formatted += "" + m + ":" + (s < 10 ? "0" : "");
+         formatted += "" + s;
+
+         return formatted;
+      }
+   </script>
+</head>
+<body>
+   <div id="root"></div>
+</body>
+</html>
